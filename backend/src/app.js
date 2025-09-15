@@ -16,7 +16,7 @@ app.use(express.json());
 // Enable CORS for frontend domain(s)
 const allowedOrigins = [
   "http://localhost:5173", // your local frontend dev URL (Vite default)
-  "https://saas-note-app-8drn.vercel.app" // your deployed frontend URL
+  "https://saas-note-app2-iu50set5w-templehubsakshis-projects.vercel.app/" // your deployed frontend URL
 ];
 
 app.use(
