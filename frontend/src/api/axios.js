@@ -3,7 +3,7 @@ import axios from "axios";
 const API = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
-      ? "https://saas-note-app2.onrender.com"  // your Render backend URL
+      ? "https://saas-note-app2.onrender.com/api"  // your Render backend URL
       : "http://localhost:5000/api",
 });
 
