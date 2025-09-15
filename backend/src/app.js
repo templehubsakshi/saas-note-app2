@@ -13,31 +13,26 @@ const app = express();
 // Middleware
 app.use(express.json());
 
-// Enable CORS for frontend domain(s)
+// CORS setup
 const allowedOrigins = [
-  "http://localhost:5173", // local dev
-  "https://saas-note-app2-odjltl3hj-templehubsakshis-projects.vercel.app", // deployed frontend
+  "http://localhost:5173",
+  "https://saas-note-app2-odjltl3hj-templehubsakshis-projects.vercel.app",
 ];
 
-// CORS options
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-    console.log("Blocked CORS attempt from:", origin);
-    return callback(new Error(`CORS policy does not allow access from origin: ${origin}`), false);
-  },
-  credentials: false, // set to false to simplify preflight requests
-};
-
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // handle preflight
-
-// Health check endpoint
-app.get("/health", (req, res) => {
-  res.json({ status: "ok" });
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization");
+  res.setHeader("Access-Control-Allow-Credentials", "false"); // optional
+  if (req.method === "OPTIONS") return res.sendStatus(200); // respond to preflight
+  next();
 });
+
+// Health check
+app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 // API Routes
 app.use("/api/auth", authRoutes);
