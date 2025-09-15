@@ -1,10 +1,9 @@
-// import axios from "axios";
+import axios from "axios";
 
 const API = axios.create({
   baseURL:
-    // Use a relative path for production
     process.env.NODE_ENV === "production"
-      ? "https://saas-note-2ia3rvcbp-templehubsakshis-projects.vercel.app/"
+      ? "/api"
       : "http://localhost:5000/api",
 });
 
