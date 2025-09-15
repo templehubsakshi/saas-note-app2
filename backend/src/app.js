@@ -15,8 +15,9 @@ app.use(express.json());
 
 // Enable CORS for frontend domain(s)
 const allowedOrigins = [
-  "http://localhost:5173", // local dev frontend
-  "https://saas-note-app2-iu50set5w-templehubsakshis-projects.vercel.app" // deployed frontend
+  "http://localhost:5173",
+  "https://saas-note-app2-iu50set5w-templehubsakshis-projects.vercel.app",
+  "https://saas-note-app2-odjltl3hj-templehubsakshis-projects.vercel.app"
 ];
 
 const corsOptions = {
