@@ -15,24 +15,23 @@ app.use(express.json());
 
 // Enable CORS for frontend domain(s)
 const allowedOrigins = [
-  "http://localhost:5173", // your local frontend dev URL (Vite default)
-  "https://saas-note-app2-iu50set5w-templehubsakshis-projects.vercel.app/" // your deployed frontend URL
+  "http://localhost:5173", // local dev frontend
+  "https://saas-note-app2-iu50set5w-templehubsakshis-projects.vercel.app" // deployed frontend
 ];
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // allow requests with no origin (like Postman)
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) === -1) {
-        const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
-        return callback(new Error(msg), false);
-      }
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
       return callback(null, true);
-    },
-    credentials: true,
-  })
-);
+    }
+    const msg = `CORS policy does not allow access from origin: ${origin}`;
+    return callback(new Error(msg), false);
+  },
+  credentials: true, // allow cookies / auth headers
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // handle preflight
 
 // Health endpoint
 app.get("/health", (req, res) => {
