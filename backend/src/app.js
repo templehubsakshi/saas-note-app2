@@ -15,26 +15,26 @@ app.use(express.json());
 
 // Enable CORS for frontend domain(s)
 const allowedOrigins = [
-  "http://localhost:5173",
-  "https://saas-note-app2-iu50set5w-templehubsakshis-projects.vercel.app",
-  "https://saas-note-app2-odjltl3hj-templehubsakshis-projects.vercel.app"
+  "http://localhost:5173", // local dev
+  "https://saas-note-app2-odjltl3hj-templehubsakshis-projects.vercel.app", // deployed frontend
 ];
 
+// CORS options
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
-    const msg = `CORS policy does not allow access from origin: ${origin}`;
-    return callback(new Error(msg), false);
+    console.log("Blocked CORS attempt from:", origin);
+    return callback(new Error(`CORS policy does not allow access from origin: ${origin}`), false);
   },
-  credentials: true, // allow cookies / auth headers
+  credentials: false, // set to false to simplify preflight requests
 };
 
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions)); // handle preflight
 
-// Health endpoint
+// Health check endpoint
 app.get("/health", (req, res) => {
   res.json({ status: "ok" });
 });
